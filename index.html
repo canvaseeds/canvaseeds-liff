@@ -8,6 +8,7 @@
   <style>
     :root{font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;color:#254b3a;background:#f2faf6}*{box-sizing:border-box}body{margin:0;padding:24px 14px}.card{max-width:480px;margin:0 auto;background:#fff;border-radius:22px;padding:28px 22px;box-shadow:0 8px 30px #285f4912}.logo{text-align:center;font-size:34px}h1{text-align:center;font-size:24px;color:#285f49;margin:5px 0}h2{font-size:19px;margin:26px 0 8px}.subtitle{text-align:center;color:#547a68;font-size:14px}p{line-height:1.7}.hint{color:#60786b;font-size:14px}.option{display:flex;gap:12px;align-items:center;padding:15px;border:1px solid #dfeae3;border-radius:12px;margin:9px 0;cursor:pointer}.option:has(input:checked){background:#e9f7ee;border-color:#73ba96}.option input{accent-color:#378b65;width:19px;height:19px}.privacy{font-size:12px;background:#e4f4ea;border-radius:10px;padding:13px;line-height:1.7;margin:18px 0}button{width:100%;border:0;border-radius:12px;padding:16px;background:#378b65;color:white;font-weight:700;font-size:16px;cursor:pointer}button:disabled{background:#a6c6b5;cursor:not-allowed}#status{font-size:14px;min-height:1.5em;text-align:center}footer{text-align:center;font-size:12px;color:#6c8176;margin-top:18px}
   </style>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
 <body>
 <main class="card">
@@ -49,6 +50,38 @@
     const selected=inputs.filter(x=>x.checked);
     document.querySelector('#status').textContent='選択内容：'+selected.map(x=>labels[tags.indexOf(x.value)]).join('、')+'（デモのため保存・送信されません）';
   });
+</script>
+  <script>
+  const LIFF_ID = "2012227961-Fomc1PKF";
+
+  async function initializeLiff() {
+    const status = document.getElementById("liff-status");
+
+    try {
+      await liff.init({ liffId: LIFF_ID });
+
+      if (!liff.isLoggedIn()) {
+        status.textContent = "LINEログイン画面に移動します";
+        liff.login();
+        return;
+      }
+
+      // 今回はログイン成功だけを確認する
+      const token = liff.getIDToken();
+
+      if (!token) {
+        throw new Error("IDトークンを取得できませんでした");
+      }
+
+      status.textContent = "LINEログイン成功！";
+    } catch (error) {
+      console.error("LIFF初期化エラー:", error);
+      status.textContent =
+        "LINEとの接続に失敗しました: " + error.message;
+    }
+  }
+
+  initializeLiff();
 </script>
 </body>
 </html>
