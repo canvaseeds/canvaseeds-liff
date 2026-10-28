@@ -23,7 +23,7 @@
     <p class="hint">兄弟姉妹がいる場合は、当てはまるものをすべて選んでください。</p>
     <div id="options"></div>
     <div class="privacy">回答はイベント案内・集計のために使用する予定です。お子さまのお名前や生年月日は取得しません。現在は画面確認用のデモです。</div>
-    <button id="submit" type="submit" disabled>回答内容を確認する</button>
+    <button id="submit" type="submit" disabled>回答を送信する</button>
     <p id="status" role="status" aria-live="polite"></p>
   </form>
   <footer>Canvaseeds 学年アンケート（デモ）</footer>
@@ -48,17 +48,79 @@
     submit.disabled=!inputs.some(x=>x.checked);
     document.querySelector('#status').textContent='';
   }));
-  document.querySelector('#survey').addEventListener('submit',e=>{
+  
+document.querySelector('#survey').addEventListener(
+  'submit',
+  async (e) => {
     e.preventDefault();
-    const selected=inputs.filter(x=>x.checked);
-    document.querySelector('#status').textContent='選択内容：'+selected.map(x=>labels[tags.indexOf(x.value)]).join('、')+'（デモのため保存・送信されません）';
-  });
+
+    const status = document.querySelector('#status');
+    const selected = inputs
+      .filter(x => x.checked)
+      .map(x => x.value);
+
+    if (selected.length === 0) return;
+
+    submit.disabled = true;
+    status.textContent = '回答を送信しています...';
+
+    try {
+      if (!liff.isLoggedIn()) {
+        throw new Error('LINEログインが必要です');
+      }
+
+      const idToken = liff.getIDToken();
+
+      if (!idToken) {
+        throw new Error('IDトークンを取得できません');
+      }
+
+      const response = await fetch(SUBMIT_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          idToken: idToken,
+          grades: selected
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          '送信に失敗しました（HTTP ' +
+          response.status + '）'
+        );
+      }
+
+      const result = await response.json();
+
+      if (result.success !== true) {
+        throw new Error('送信結果を確認できません');
+      }
+
+      status.textContent =
+        '回答を受け付けました！ありがとうございます。';
+
+    } catch (error) {
+      console.error('アンケート送信エラー:', error);
+      status.textContent = error.message;
+      submit.disabled = false;
+    }
+  }
+);
+
 </script>
  
 <script>
   const LIFF_ID = "2012227961-Fomc1PKF";
 
   const API_URL = "https://canvaseeds-liff-api-gngvfke7d3ceawax.japanwest-01.azurewebsites.net/api/verify-line";
+
+  const SUBMIT_API_URL = API_URL.replace(
+  /\/verify-line$/,
+  "/submit-survey"
+);
 
   async function initializeLiff() {
     const status = document.getElementById("liff-status");
