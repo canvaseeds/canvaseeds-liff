@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#e9f7ee">
-  <title>Canvaseeds | 学年アンケート</title>
+  <title>きゃんばしーず | お子さま学年アンケート</title>
   <style>
     :root{font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;color:#254b3a;background:#f2faf6}*{box-sizing:border-box}body{margin:0;padding:24px 14px}.card{max-width:480px;margin:0 auto;background:#fff;border-radius:22px;padding:28px 22px;box-shadow:0 8px 30px #285f4912}.logo{text-align:center;font-size:34px}h1{text-align:center;font-size:24px;color:#285f49;margin:5px 0}h2{font-size:19px;margin:26px 0 8px}.subtitle{text-align:center;color:#547a68;font-size:14px}p{line-height:1.7}.hint{color:#60786b;font-size:14px}.option{display:flex;gap:12px;align-items:center;padding:15px;border:1px solid #dfeae3;border-radius:12px;margin:9px 0;cursor:pointer}.option:has(input:checked){background:#e9f7ee;border-color:#73ba96}.option input{accent-color:#378b65;width:19px;height:19px}.privacy{font-size:12px;background:#e4f4ea;border-radius:10px;padding:13px;line-height:1.7;margin:18px 0}button{width:100%;border:0;border-radius:12px;padding:16px;background:#378b65;color:white;font-weight:700;font-size:16px;cursor:pointer}button:disabled{background:#a6c6b5;cursor:not-allowed}#status{font-size:14px;min-height:1.5em;text-align:center}footer{text-align:center;font-size:12px;color:#6c8176;margin-top:18px}
   </style>
@@ -13,7 +13,7 @@
 <body>
 <main class="card">
   <div class="logo">🌱</div>
-  <h1>Canvaseeds</h1>
+  <h1>きゃんばしーず</h1>
   <p class="subtitle">あなたにぴったりのイベント情報を</p>
   <p id="liff-status" role="status" aria-live="polite">
   LINEとの接続を確認中...
@@ -22,11 +22,11 @@
     <h2>お子さまの学年を教えてください</h2>
     <p class="hint">兄弟姉妹がいる場合は、当てはまるものをすべて選んでください。</p>
     <div id="options"></div>
-    <div class="privacy">回答はイベント案内・集計のために使用する予定です。お子さまのお名前や生年月日は取得しません。現在は画面確認用のデモです。</div>
+    <div class="privacy">回答はイベント案内・集計のために使用する予定です。お子さまのお名前や生年月日は取得しません。</div>
     <button id="submit" type="submit" disabled>回答を送信する</button>
     <p id="status" role="status" aria-live="polite"></p>
   </form>
-  <footer>Canvaseeds 学年アンケート（デモ）</footer>
+  <footer>Canvaseeds お子さま学年アンケート</footer>
 </main>
 <script>
   const labels=['未就学児','小学1〜2年生','小学3〜4年生','小学5〜6年生','中学生','高校生','その他・該当なし'];
