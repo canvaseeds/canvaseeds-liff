@@ -87,11 +87,13 @@ document.querySelector('#survey').addEventListener(
       });
 
       if (!response.ok) {
-        throw new Error(
-          '送信に失敗しました（HTTP ' +
-          response.status + '）'
-        );
-      }
+  const errorMessage = await response.text();
+
+  throw new Error(
+    '送信に失敗しました（HTTP ' +
+    response.status + '）：' + errorMessage
+  );
+}
 
       const result = await response.json();
 
